@@ -12,8 +12,10 @@
 
 -After some analysis on the data, if the data is verified for the transfer, pyhsical layer (Data Diode) should allow this data to flow from low (unclassified network, low) to n2 (classified network, high). So, there must be two mechanisms: 1. Somehow, verify that package whether it can transfer or not. (Logical layer) 2. Then, use that verification in the physical hardware to allow that data to flow. (Physical layer, data diode) But it should allow only for that data. The term for solutions of this problem is called Cross Domain Solution (CDS).
 
-- In low-to-high transfer, the risk we have is that data we transfer is malicious or not. So there should be system scan for virus, logic bombs, malicious scripts etc.
-- In high-to-low transfer, the risk is data leakage (spillage). We dont want our secret data escaping our classfied environment.
+- In low-to-high transfer, the risk we have is that data we transfer is malicious or not. So there should be system scan for virus, logic bombs, malicious scripts etc. We use CDR, content disarmanent and reconstration. For example a doc file scan by text then build a new one so that payload or hidden text are avoided. However cannot inspect exe files, therefore it is better to get codes and build the exe file inside high network. if not possible, check sig of that exe file.
+- In high-to-low transfer, the risk is data leakage (spillage). We dont want our secret data escaping our classfied environment. We use DLP data loss prevention, searches for top secret etc.) 
 
 - As I mentioned above, data diade only allow data in one direction. But then, a question comes into my mind: how will tcp work, since it requires ack etc? This was a perfect question and solution is also perfect. Data diode has two proxies for each side, and it just sends fake acks to sender and reciver. Perfect. ![alt text](image.png)
 - Logical layer checks structure verification (if it is really a PDF), content disarm and reconstruction (CDR, destroy the old file and build one), dirty word search (high-to-low, like top secret), virus scan etc.
+
+
