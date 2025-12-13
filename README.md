@@ -26,13 +26,13 @@ Let me briefly describe them. Theory: learning from docs and tutorials. Summariz
 
 Here is the roadmap I will probably follow. I will not be so strict about the order to make this fun.
 
-1. Linux + Networking + Git + Bash/Python
+1. Linux + Networking + Git + Bash/Python                                   ✅ (Python)
 
 2. Docker (build/run images, Docker Compose)
 
-3. CI/CD (GitHub Actions or similar)
+3. CI/CD (GitHub Actions or similar)                                        ✅ (CI/CD, CI/CD pipeline, GitHub Actions)
 
-4. Cloud basics (VMs, networking, storage, IAM)
+4. Cloud basics (VMs, networking, storage, IAM)                             ✅ (Azure fundementals certificate)
 
 5. Terraform (build infra as code)
 

@@ -1,0 +1,51 @@
+name: Docker CI/CD (No Hub)
+
+on: [push]
+
+jobs:
+  # --- JOB 1: TEST (CI) ---
+  test-code:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Dependencies
+        # We need this to run tests (even if they are simple)
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run Unit Tests
+        run: python -m unittest test_app.py
+
+  # --- JOB 2: DEPLOY (CD) ---
+  deploy-to-vm:
+    needs: test-code  # <--- CRITICAL: Stops here if tests fail
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: SSH, Build & Run
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # 1. Go to folder
+            cd /home/azureuser/myapp
+            
+            # 2. Get the new code
+            git pull origin main
+            
+            # 3. Build the Docker Image (On the VM)
+            # This is the "Build" step happening on your server
+            docker build -t my-python-app .
+            
+            # 4. Cleanup & Run
+            docker stop myapp || true
+            docker rm myapp || true
+            docker run -d --name myapp --restart unless-stopped my-python-app
