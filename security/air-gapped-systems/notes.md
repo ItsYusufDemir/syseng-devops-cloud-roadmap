@@ -1,3 +1,5 @@
+# notes
+
 - In this section, I will have some important concepts about air gapped systems which are really important in defense industry and goverment.
 - Air gapped system: network or device that has no physical connection to the public internet or unclassified network.
 - The important part is "no physical connection". So that we can be ensure there is no flow of data packets to outside.
@@ -17,5 +19,21 @@
 
 - As I mentioned above, data diade only allow data in one direction. But then, a question comes into my mind: how will tcp work, since it requires ack etc? This was a perfect question and solution is also perfect. Data diode has two proxies for each side, and it just sends fake acks to sender and reciver. Perfect. ![alt text](image.png)
 - Logical layer checks structure verification (if it is really a PDF), content disarm and reconstruction (CDR, destroy the old file and build one), dirty word search (high-to-low, like top secret), virus scan etc.
+
+
+## Air-gapped system design:
+
+1. No pyhsical connection to the internet. Remove all components that can transfer data like wifi, gps, bluetooth, mic, speaker modules. Also to be safe, put the system into faraday cage so that we ensure there is no remote data transfer. Any cable going to the cage must pass though waweguide filter (filteres EMF) 2. Build image in another machine, do software updates, activate licences. Then put that image to air-gapped system. 
+2. Never connect clean system to dirty system (low pc over network, dirty USB etc).
+3. Even in this high network, create isolated subnetworks (VLANs) according to their priorities.
+4. Use fiber optic cables instead of coppers. There is no EM leakage in fibers. Also if somone tries to sniff cable pyhsically, the link would break and this would be detected easily.
+5. Create fake internet infrastructure. Create your local NTP (Time) server with atomic clock.
+6. Run a restricted internal DNS server. 
+7. Run your own certificate authority (CA) for TLS
+8. Run WSUS (windows) / Repository Mirror (Linux) to hold packages, updates.
+9. Disable multicast and broadcast protocols.
+10. Monitor all of these settings to write-only log server (WORM)
+11. Use above low-to-high, high-to-low design for data transfer between these networks.
+12. Pyhsically secure ports of computers.
 
 
